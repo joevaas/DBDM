@@ -1,0 +1,104 @@
+Aim
+
+To create a Bus Reservation database with constraints and perform queries, view creation, and exception handling.
+
+Algorithm
+Create tables: BUS, PASSENGER, BOOK_TICKET
+Apply Primary Keys & Foreign Keys
+Apply CHECK constraint (DOB > 2000)
+Insert sample data
+Execute required SELECT queries
+Create VIEW for specific route
+Use procedure with exception handling
+Code (Short & Full SQL)
+CREATE TABLE BUS(
+    ROUTENO INT PRIMARY KEY,
+    SOURCE VARCHAR(30),
+    DESTINATION VARCHAR(30)
+);
+
+CREATE TABLE PASSENGER(
+    PID INT PRIMARY KEY,
+    PNAME VARCHAR(30),
+    DOB DATE CHECK (DOB > '2000-01-01'),
+    GENDER VARCHAR(10)
+);
+
+CREATE TABLE BOOK_TICKET(
+    PID INT,
+    ROUTENO INT,
+    JOURNEY_DATE DATE,
+    SEAT_NO INT,
+    PRIMARY KEY(PID, ROUTENO, JOURNEY_DATE),
+    FOREIGN KEY(PID) REFERENCES PASSENGER(PID),
+    FOREIGN KEY(ROUTENO) REFERENCES BUS(ROUTENO)
+);
+
+-- Insert Data
+INSERT INTO BUS VALUES
+(1,'Mumbai','Chennai'),
+(2,'Chennai','Delhi');
+
+INSERT INTO PASSENGER VALUES
+(1,'Ravi','2001-01-01','male'),
+(2,'Arun','2002-02-02','male'),
+(3,'Kumar','2003-03-03','male');
+
+INSERT INTO BOOK_TICKET VALUES
+(1,1,'2019-02-02',10),
+(2,1,'2019-02-02',11),
+(1,1,'2019-03-03',12),
+(1,1,'2019-04-04',13),
+(3,2,'2019-02-02',14);
+
+-- ii. Passengers Mumbai → Chennai on 02-02-2019
+SELECT P.PNAME
+FROM PASSENGER P
+JOIN BOOK_TICKET B ON P.PID=B.PID
+JOIN BUS BU ON B.ROUTENO=BU.ROUTENO
+WHERE BU.SOURCE='Mumbai'
+AND BU.DESTINATION='Chennai'
+AND B.JOURNEY_DATE='2019-02-02';
+
+-- iii. Passengers traveled more than 3 times same route
+SELECT PID, ROUTENO, COUNT(*) AS TRIPS
+FROM BOOK_TICKET
+GROUP BY PID, ROUTENO
+HAVING COUNT(*)>3;
+
+-- iv. View Chennai → Delhi
+CREATE VIEW CHENNAI_DELHI AS
+SELECT B.ROUTENO, B.SOURCE, B.DESTINATION, T.JOURNEY_DATE
+FROM BUS B
+JOIN BOOK_TICKET T ON B.ROUTENO=T.ROUTENO
+WHERE B.SOURCE='Chennai' AND B.DESTINATION='Delhi';
+
+-- Procedure with Exception
+DELIMITER //
+CREATE PROCEDURE CHECK_TICKETS(IN jdate DATE)
+BEGIN
+    DECLARE cnt INT;
+    SELECT COUNT(*) INTO cnt FROM BOOK_TICKET WHERE JOURNEY_DATE=jdate;
+    
+    IF cnt = 0 THEN
+        SELECT 'No ticket booked on specified date' AS MESSAGE;
+    ELSE
+        SELECT * FROM BOOK_TICKET WHERE JOURNEY_DATE=jdate;
+    END IF;
+END //
+DELIMITER ;
+Output
+Query ii Result
+PNAME
+Ravi
+Arun
+Query iii Result
+PID	ROUTENO	TRIPS
+1	1	3+
+View Output (CHENNAI_DELHI)
+ROUTENO	SOURCE	DESTINATION	JOURNEY_DATE
+2	Chennai	Delhi	2019-02-02
+
+Result
+
+Thus, the Bus Reservation database was created and all operations were executed successfully.

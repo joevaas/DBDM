@@ -1,0 +1,75 @@
+Aim
+
+To develop a Hotel Management System using front-end tools (NetBeans / Visual Studio) and back-end database (Oracle).
+
+Algorithm
+Identify entities: Customer, Room, Booking, Payment
+Design database tables with keys
+Create tables in Oracle
+Insert sample data
+Connect front-end (Java/.NET) with database
+Perform operations: booking, check-in, check-out
+Display results
+Database Design (SQL Code)
+CREATE TABLE Customer(
+    cust_id INT PRIMARY KEY,
+    name VARCHAR(30),
+    phone VARCHAR(15)
+);
+
+CREATE TABLE Room(
+    room_no INT PRIMARY KEY,
+    type VARCHAR(20),
+    price INT,
+    status VARCHAR(10)
+);
+
+CREATE TABLE Booking(
+    booking_id INT PRIMARY KEY,
+    cust_id INT,
+    room_no INT,
+    checkin DATE,
+    checkout DATE,
+    FOREIGN KEY(cust_id) REFERENCES Customer(cust_id),
+    FOREIGN KEY(room_no) REFERENCES Room(room_no)
+);
+
+CREATE TABLE Payment(
+    pay_id INT PRIMARY KEY,
+    booking_id INT,
+    amount INT,
+    FOREIGN KEY(booking_id) REFERENCES Booking(booking_id)
+);
+
+-- Sample Data
+INSERT INTO Customer VALUES (1,'Ravi','9876543210');
+INSERT INTO Room VALUES (101,'AC',2000,'Available');
+INSERT INTO Booking VALUES (1,1,101,'2023-01-01','2023-01-03');
+INSERT INTO Payment VALUES (1,1,4000);
+Front-End Logic (Simple Example – Java)
+import java.sql.*;
+
+public class HotelApp {
+    public static void main(String[] args) throws Exception {
+        Connection con = DriverManager.getConnection(
+            "jdbc:oracle:thin:@localhost:1521:xe","system","password");
+
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery("SELECT * FROM Booking");
+
+        while(rs.next()){
+            System.out.println(rs.getInt(1) + " " + rs.getInt(2));
+        }
+
+        con.close();
+    }
+}
+
+Output
+Booking Table
+booking_id	cust_id	room_no	checkin	checkout
+1	1	101	01-01-23	03-01-23
+
+Result
+
+Thus, the Hotel Management System was developed using front-end and back-end tools successfully.

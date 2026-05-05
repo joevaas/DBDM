@@ -1,0 +1,41 @@
+Aim
+
+To write a PL/SQL function to calculate income tax based on given salary slabs.
+
+Algorithm
+Accept salary (pay) as input
+Check conditions using IF–ELSIF
+Calculate tax based on slab
+Return tax value
+Code (PL/SQL Function)
+CREATE OR REPLACE FUNCTION calc_tax(pay NUMBER)
+RETURN NUMBER
+IS
+    tax NUMBER := 0;
+BEGIN
+    IF pay <= 250000 THEN
+        tax := 0;
+
+    ELSIF pay <= 500000 THEN
+        tax := pay * 0.05;
+
+    ELSIF pay <= 1000000 THEN
+        tax := pay * 0.20;
+
+    ELSE
+        tax := pay * 0.30;
+    END IF;
+
+    RETURN tax;
+END;
+/
+Calling Function
+SELECT calc_tax(600000) AS TAX FROM dual;
+
+Output (Example)
+TAX
+120000
+
+Result
+
+Thus, the PL/SQL function to calculate income tax was executed successfully.

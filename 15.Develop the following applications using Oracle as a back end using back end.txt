@@ -1,0 +1,67 @@
+Aim
+
+To develop an Online Pharmacy System using Oracle as back-end and front-end tools (NetBeans / Visual Studio).
+
+Algorithm
+Identify entities: Customer, Medicine, Order, Order_Items, Payment
+Design tables with primary & foreign keys
+Create tables in Oracle
+Insert sample data
+Connect front-end with database
+Perform operations: order, billing, stock update
+Display results
+Database Design (SQL Code)
+CREATE TABLE Customer(
+    cust_id INT PRIMARY KEY,
+    name VARCHAR(30),
+    phone VARCHAR(15)
+);
+
+CREATE TABLE Medicine(
+    med_id INT PRIMARY KEY,
+    name VARCHAR(30),
+    price INT,
+    stock INT
+);
+
+CREATE TABLE Orders(
+    order_id INT PRIMARY KEY,
+    cust_id INT,
+    order_date DATE,
+    FOREIGN KEY(cust_id) REFERENCES Customer(cust_id)
+);
+
+CREATE TABLE Order_Items(
+    order_id INT,
+    med_id INT,
+    qty INT,
+    PRIMARY KEY(order_id, med_id),
+    FOREIGN KEY(order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY(med_id) REFERENCES Medicine(med_id)
+);
+
+CREATE TABLE Payment(
+    pay_id INT PRIMARY KEY,
+    order_id INT,
+    amount INT,
+    FOREIGN KEY(order_id) REFERENCES Orders(order_id)
+);
+
+-- Sample Data
+INSERT INTO Customer VALUES (1,'Ravi','9876543210');
+INSERT INTO Medicine VALUES (101,'Paracetamol',10,100);
+INSERT INTO Orders VALUES (1,1,'2023-01-01');
+INSERT INTO Order_Items VALUES (1,101,5);
+INSERT INTO Payment VALUES (1,1,50);
+
+Output
+Medicine Table
+med_id	name	price	stock
+101	Paracetamol	10	100
+Order Items
+order_id	med_id	qty
+1	101	5
+
+Result
+
+Thus, the Online Pharmacy System was developed using Oracle (back-end) and front-end tools successfully.

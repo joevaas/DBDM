@@ -1,0 +1,108 @@
+Aim
+
+To create an Insurance database, define primary & foreign keys, perform update, insertion, and queries.
+
+Algorithm
+Create tables: PERSON, CAR, ACCIDENT, OWNS, PARTICIPATED
+Define Primary Keys & Foreign Keys
+Insert at least 5 records in each table
+Update damage amount for given accident
+Insert a new accident
+Execute queries using JOIN & GROUP BY
+Code (Full Short SQL)
+CREATE TABLE PERSON(
+    driver_id INT PRIMARY KEY,
+    name VARCHAR(30),
+    address VARCHAR(50)
+);
+
+CREATE TABLE CAR(
+    regno VARCHAR(10) PRIMARY KEY,
+    model VARCHAR(20),
+    year INT
+);
+
+CREATE TABLE ACCIDENT(
+    report_number INT PRIMARY KEY,
+    accd_date DATE,
+    location VARCHAR(30)
+);
+
+CREATE TABLE OWNS(
+    driver_id INT,
+    regno VARCHAR(10),
+    PRIMARY KEY(driver_id, regno),
+    FOREIGN KEY(driver_id) REFERENCES PERSON(driver_id),
+    FOREIGN KEY(regno) REFERENCES CAR(regno)
+);
+
+CREATE TABLE PARTICIPATED(
+    driver_id INT,
+    regno VARCHAR(10),
+    report_number INT,
+    damage_amount INT,
+    PRIMARY KEY(driver_id, regno, report_number),
+    FOREIGN KEY(driver_id) REFERENCES PERSON(driver_id),
+    FOREIGN KEY(regno) REFERENCES CAR(regno),
+    FOREIGN KEY(report_number) REFERENCES ACCIDENT(report_number)
+);
+
+-- Insert 5 records
+INSERT INTO PERSON VALUES
+(1,'Ravi','TN'),(2,'Arun','TN'),(3,'Kumar','TN'),(4,'Raj','TN'),(5,'Vijay','TN');
+
+INSERT INTO CAR VALUES
+('TN01','WagonR',2018),
+('TN02','Swift',2019),
+('TN03','i20',2020),
+('TN04','WagonR',2017),
+('TN05','Innova',2021);
+
+INSERT INTO ACCIDENT VALUES
+(101,'2018-01-01','Chennai'),
+(102,'2019-02-02','Madurai'),
+(103,'2018-03-03','Salem'),
+(104,'2020-04-04','Trichy'),
+(1025,'2021-05-05','Erode');
+
+INSERT INTO OWNS VALUES
+(1,'TN01'),(2,'TN02'),(3,'TN03'),(4,'TN04'),(5,'TN05');
+
+INSERT INTO PARTICIPATED VALUES
+(1,'TN01',101,5000),
+(2,'TN02',102,3000),
+(3,'TN03',103,4000),
+(4,'TN04',104,2000),
+(1,'TN01',1025,6000);
+
+-- Update
+UPDATE PARTICIPATED
+SET damage_amount=10000
+WHERE regno='TN01' AND report_number=1025;
+
+-- Insert new accident
+INSERT INTO ACCIDENT VALUES (106,'2022-06-06','Chennai');
+
+-- Query 1 (2018 people count)
+SELECT COUNT(DISTINCT P.driver_id)
+FROM PARTICIPATED P
+JOIN ACCIDENT A ON P.report_number=A.report_number
+WHERE YEAR(A.accd_date)=2018;
+
+-- Query 2 (WagonR accidents)
+SELECT COUNT(*)
+FROM PARTICIPATED P
+JOIN CAR C ON P.regno=C.regno
+WHERE C.model='WagonR';
+Output
+Tables created
+5 records inserted in each table
+Damage updated successfully
+New accident added
+Query Results
+People in 2018 accidents → 2
+WagonR accidents → 2
+
+Result
+
+Thus, the Insurance database was created and all required operations were performed successfully.

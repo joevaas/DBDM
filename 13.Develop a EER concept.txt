@@ -1,0 +1,72 @@
+Aim
+
+To develop an EER model using bottom-up approach (generalization) and apply mapping cardinalities.
+
+Algorithm
+Identify low-level entities (subclasses)
+Group similar entities to form a higher-level entity (superclass)
+Apply generalization (bottom → top)
+Define attributes for superclass and subclasses
+Establish relationships between entities
+Assign mapping cardinalities (1:1, 1:N, M:N)
+Convert into relational schema
+Concept (Use in Diagram)
+Generalization (Bottom-Up)
+Subclasses → Car, Truck
+Superclass → Vehicle
+Entities & Attributes
+Vehicle (vehicle_id, type)
+Car (seats)
+Truck (capacity)
+Owner (owner_id, name)
+Relationships & Cardinality
+Owner → Vehicle (1 : N)
+Vehicle → Car/Truck (IS-A relationship)
+
+👉 (Draw: Car & Truck → Vehicle using triangle “ISA”)
+
+Code (Short SQL Mapping)
+CREATE TABLE Vehicle(
+    vehicle_id INT PRIMARY KEY,
+    type VARCHAR(20)
+);
+
+CREATE TABLE Car(
+    vehicle_id INT PRIMARY KEY,
+    seats INT,
+    FOREIGN KEY(vehicle_id) REFERENCES Vehicle(vehicle_id)
+);
+
+CREATE TABLE Truck(
+    vehicle_id INT PRIMARY KEY,
+    capacity INT,
+    FOREIGN KEY(vehicle_id) REFERENCES Vehicle(vehicle_id)
+);
+
+CREATE TABLE Owner(
+    owner_id INT PRIMARY KEY,
+    name VARCHAR(30)
+);
+
+CREATE TABLE Owns(
+    owner_id INT,
+    vehicle_id INT,
+    PRIMARY KEY(owner_id, vehicle_id),
+    FOREIGN KEY(owner_id) REFERENCES Owner(owner_id),
+    FOREIGN KEY(vehicle_id) REFERENCES Vehicle(vehicle_id)
+);
+Output
+Vehicle
+vehicle_id	type
+1	Car
+2	Truck
+Car
+vehicle_id	seats
+1	5
+Truck
+vehicle_id	capacity
+2	10
+
+Result
+
+Thus, the EER model was developed using bottom-up generalization and mapping cardinalities successfully.

@@ -1,0 +1,90 @@
+Aim
+
+To develop an ER model for Agriculture Management System and perform EER to Object Database (ODB) mapping with proper keys and relationships.
+
+Algorithm
+Identify entities (Farmer, Farm, Crop)
+Define attributes for each entity
+Establish relationships (owns, grows)
+Apply EER concepts (specialization: Crop → FoodCrop, CashCrop)
+Map entities to tables (ODB mapping)
+Define Primary Key & Foreign Key
+Insert sample data
+Display output
+
+Code (Short & Full)
+-- Farmer Table
+CREATE TABLE Farmer(
+    farmer_id INT PRIMARY KEY,
+    name VARCHAR(30)
+);
+
+-- Farm Table
+CREATE TABLE Farm(
+    farm_id INT PRIMARY KEY,
+    location VARCHAR(30),
+    farmer_id INT,
+    FOREIGN KEY(farmer_id) REFERENCES Farmer(farmer_id)
+);
+
+-- Crop (Parent)
+CREATE TABLE Crop(
+    crop_id INT PRIMARY KEY,
+    name VARCHAR(30)
+);
+
+-- FoodCrop (Child - EER)
+CREATE TABLE FoodCrop(
+    crop_id INT PRIMARY KEY,
+    nutrition VARCHAR(30),
+    FOREIGN KEY(crop_id) REFERENCES Crop(crop_id)
+);
+
+-- CashCrop (Child - EER)
+CREATE TABLE CashCrop(
+    crop_id INT PRIMARY KEY,
+    price INT,
+    FOREIGN KEY(crop_id) REFERENCES Crop(crop_id)
+);
+
+-- Relationship (Farm grows Crop)
+CREATE TABLE Farm_Crop(
+    farm_id INT,
+    crop_id INT,
+    PRIMARY KEY(farm_id,crop_id),
+    FOREIGN KEY(farm_id) REFERENCES Farm(farm_id),
+    FOREIGN KEY(crop_id) REFERENCES Crop(crop_id)
+);
+
+-- Insert Data
+INSERT INTO Farmer VALUES (1,'Ravi');
+INSERT INTO Farm VALUES (101,'TN',1);
+
+INSERT INTO Crop VALUES (201,'Rice'),(202,'Cotton');
+
+INSERT INTO FoodCrop VALUES (201,'High');
+INSERT INTO CashCrop VALUES (202,5000);
+
+INSERT INTO Farm_Crop VALUES (101,201),(101,202);
+
+Correct Output
+Farmer
+farmer_id	name
+1	Ravi
+Farm
+farm_id	location	farmer_id
+101	TN	1
+Crop
+crop_id	name
+201	Rice
+202	Cotton
+FoodCrop
+crop_id	nutrition
+201	High
+CashCrop
+crop_id	price
+202	5000
+
+Result
+
+Thus, the ER model was designed, enhanced using EER concepts, and successfully mapped into relational tables (ODB mapping).

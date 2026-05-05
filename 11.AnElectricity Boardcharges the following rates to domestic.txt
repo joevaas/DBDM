@@ -1,0 +1,59 @@
+Aim
+
+To write a PL/SQL program to calculate electricity charges based on slab rates and display charges for a given connection.
+
+Algorithm
+Read connection_id, name, units
+Apply slab conditions:
+1–100 → ₹1
+101–200 → ₹1.5
+201–500 → ₹2 & ₹3
+Above 500 → ₹3.5, ₹4.6, ₹6.6
+Calculate total bill
+Display connection_id, name, bill amount
+Code (Full PL/SQL)
+SET SERVEROUTPUT ON;
+
+DECLARE
+    cid NUMBER := &connection_id;
+    cname VARCHAR2(30) := '&name';
+    units NUMBER := &units;
+    bill NUMBER := 0;
+BEGIN
+    IF units <= 100 THEN
+        bill := units * 1;
+
+    ELSIF units <= 200 THEN
+        bill := (100 * 1) + (units - 100) * 1.5;
+
+    ELSIF units <= 500 THEN
+        bill := (200 * 2) + (units - 200) * 3;
+
+    ELSE
+        bill := (200 * 3.5) + (300 * 4.6) + (units - 500) * 6.6;
+    END IF;
+
+    DBMS_OUTPUT.PUT_LINE('Connection ID: ' || cid);
+    DBMS_OUTPUT.PUT_LINE('Name: ' || cname);
+    DBMS_OUTPUT.PUT_LINE('Units: ' || units);
+    DBMS_OUTPUT.PUT_LINE('Total Bill: Rs.' || bill);
+END;
+/
+Output (Example)
+
+Input:
+
+connection_id = 101
+name = Ravi
+units = 550
+
+Output:
+
+Connection ID: 101
+Name: Ravi
+Units: 550
+Total Bill: Rs.2410
+
+Result
+
+Thus, the PL/SQL program to calculate electricity bill was executed successfully.

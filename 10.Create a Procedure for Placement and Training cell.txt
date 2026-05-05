@@ -1,0 +1,97 @@
+Aim
+
+To create a procedure for Placement & Training system and retrieve
+(i) eligible students for a company and
+(ii) student with highest salary.
+
+Algorithm
+Create tables: Stud_details, Company, Training_Details, Placed
+Insert sample data
+Create procedure
+Fetch:
+Eligible students (percentage condition)
+Highest salary student using MAX()
+Code (Short & Full PL/SQL)
+-- Tables
+CREATE TABLE Stud_details(
+    regno INT PRIMARY KEY,
+    name VARCHAR(30),
+    dept VARCHAR(20),
+    percentage INT
+);
+
+CREATE TABLE Company(
+    companyID INT PRIMARY KEY,
+    name VARCHAR(30),
+    no_of_vacancy INT
+);
+
+CREATE TABLE Training_Details(
+    CourseID INT PRIMARY KEY,
+    name VARCHAR(30),
+    Trainer VARCHAR(30)
+);
+
+CREATE TABLE Placed(
+    regno INT,
+    companyID INT,
+    minSal INT,
+    FOREIGN KEY(regno) REFERENCES Stud_details(regno),
+    FOREIGN KEY(companyID) REFERENCES Company(companyID)
+);
+
+-- Sample Data
+INSERT INTO Stud_details VALUES
+(1,'Ravi','CSE',80),
+(2,'Arun','ECE',70),
+(3,'Kumar','CSE',90);
+
+INSERT INTO Company VALUES
+(101,'TCS',5),
+(102,'Infosys',3);
+
+INSERT INTO Placed VALUES
+(1,101,30000),
+(3,102,50000);
+
+-- Procedure
+CREATE OR REPLACE PROCEDURE proc_placement
+IS
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Eligible Students (>=75%)');
+    
+    FOR rec IN (SELECT name, percentage FROM Stud_details WHERE percentage >= 75)
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(rec.name || ' - ' || rec.percentage);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Highest Salary Student');
+    
+    FOR rec IN (
+        SELECT S.name, P.minSal
+        FROM Stud_details S
+        JOIN Placed P ON S.regno = P.regno
+        WHERE P.minSal = (SELECT MAX(minSal) FROM Placed)
+    )
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(rec.name || ' - ' || rec.minSal);
+    END LOOP;
+END;
+/
+Calling Procedure
+SET SERVEROUTPUT ON;
+BEGIN
+    proc_placement;
+END;
+/
+Output
+Eligible Students (>=75%)
+Ravi - 80
+Kumar - 90
+
+Highest Salary Student
+Kumar - 50000
+
+Result
+
+Thus, the Placement & Training procedure was created and executed successfully.

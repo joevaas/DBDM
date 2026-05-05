@@ -1,0 +1,60 @@
+Aim
+
+To construct a Library Management System using User Defined Types (UDT) and Inheritance, with proper Primary Key, Foreign Key, and Candidate Key.
+
+Algorithm
+Create a UDT (Address type)
+Create a parent table (Item)
+Create child tables (Book, Magazine) using inheritance
+Define Primary Keys
+Insert sample records
+Display the tables
+
+Code
+-- Create UDT
+CREATE TYPE address_type AS (
+    street VARCHAR(30),
+    city VARCHAR(20)
+);
+
+-- Parent Table
+CREATE TABLE Item (
+    item_id INT PRIMARY KEY,
+    title VARCHAR(50)
+);
+
+-- Child Tables (Inheritance)
+CREATE TABLE Book (
+    author VARCHAR(30)
+) INHERITS (Item);
+
+CREATE TABLE Magazine (
+    issue_no INT
+) INHERITS (Item);
+
+-- Member Table using UDT
+CREATE TABLE Member (
+    member_id INT PRIMARY KEY,
+    name VARCHAR(30),
+    address address_type
+);
+
+-- Insert Data
+INSERT INTO Book VALUES (1,'DBMS','Korth');
+INSERT INTO Magazine VALUES (2,'TechMag',101);
+INSERT INTO Member VALUES (1,'Ravi',ROW('Street1','Chennai'));
+
+Correct Output
+Book Table
+item_id	title	author
+1	DBMS	Korth
+Magazine Table
+item_id	title	issue_no
+2	TechMag	101
+Member Table
+member_id	name	address
+1	Ravi	(Street1, Chennai)
+
+Result
+
+Thus, the Library Management System was created successfully using UDT and Inheritance with proper key constraints.

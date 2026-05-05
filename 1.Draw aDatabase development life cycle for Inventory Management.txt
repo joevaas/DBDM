@@ -1,0 +1,68 @@
+Aim
+
+To design a Database Development Life Cycle (DBLC) for an Inventory Management System and construct an ER diagram with entities, attributes, and relationships.
+
+Algorithm
+Identify system requirements (products, suppliers, orders)
+Design conceptual model (ER diagram)
+Define entities and attributes
+Establish relationships with cardinalities
+Convert ER → relational schema
+Create tables using SQL
+Insert sample data and verify
+
+Code (Short SQL)
+CREATE TABLE Supplier(
+    supplier_id INT PRIMARY KEY,
+    name VARCHAR(30)
+);
+
+CREATE TABLE Product(
+    product_id INT PRIMARY KEY,
+    name VARCHAR(30),
+    price INT,
+    supplier_id INT,
+    FOREIGN KEY(supplier_id) REFERENCES Supplier(supplier_id)
+);
+
+CREATE TABLE Customer(
+    customer_id INT PRIMARY KEY,
+    name VARCHAR(30)
+);
+
+CREATE TABLE Orders(
+    order_id INT PRIMARY KEY,
+    customer_id INT,
+    FOREIGN KEY(customer_id) REFERENCES Customer(customer_id)
+);
+
+CREATE TABLE Order_Details(
+    order_id INT,
+    product_id INT,
+    quantity INT,
+    PRIMARY KEY(order_id, product_id),
+    FOREIGN KEY(order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY(product_id) REFERENCES Product(product_id)
+);
+
+-- Sample Data
+INSERT INTO Supplier VALUES (1,'ABC Traders');
+INSERT INTO Product VALUES (101,'Rice',50,1);
+INSERT INTO Customer VALUES (201,'Ravi');
+INSERT INTO Orders VALUES (301,201);
+INSERT INTO Order_Details VALUES (301,101,5);
+
+Output
+Product Table
+product_id	name	price	supplier_id
+101	Rice	50	1
+Orders Table
+order_id	customer_id
+301	201
+Order Details
+order_id	product_id	quantity
+301	101	5
+
+Result
+
+Thus, the Inventory Management System database was designed using DBLC and ER modeling successfully.

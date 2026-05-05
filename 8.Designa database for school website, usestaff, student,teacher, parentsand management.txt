@@ -1,0 +1,72 @@
+Aim
+
+To design a school database with entities like Student, Teacher, Staff, Parent, Management and perform DCL & TCL operations.
+
+Algorithm
+Create tables for all entities
+Apply Primary Keys & Foreign Keys
+Insert sample data
+Perform DCL (GRANT, REVOKE)
+Perform TCL (COMMIT, ROLLBACK, SAVEPOINT)
+Code (Short & Full SQL)
+CREATE TABLE Student(
+    sid INT PRIMARY KEY,
+    name VARCHAR(30),
+    class VARCHAR(10)
+);
+
+CREATE TABLE Teacher(
+    tid INT PRIMARY KEY,
+    name VARCHAR(30),
+    subject VARCHAR(20)
+);
+
+CREATE TABLE Staff(
+    staff_id INT PRIMARY KEY,
+    name VARCHAR(30),
+    role VARCHAR(20)
+);
+
+CREATE TABLE Parent(
+    pid INT PRIMARY KEY,
+    name VARCHAR(30),
+    sid INT,
+    FOREIGN KEY(sid) REFERENCES Student(sid)
+);
+
+CREATE TABLE Management(
+    mid INT PRIMARY KEY,
+    name VARCHAR(30),
+    role VARCHAR(20)
+);
+
+-- Insert Data
+INSERT INTO Student VALUES (1,'Ravi','10'),(2,'Arun','9');
+INSERT INTO Teacher VALUES (101,'Kumar','Maths');
+INSERT INTO Staff VALUES (201,'Raj','Clerk');
+INSERT INTO Parent VALUES (301,'Suresh',1);
+INSERT INTO Management VALUES (401,'Admin','Principal');
+
+-- DCL Commands
+GRANT SELECT, INSERT ON Student TO user1;
+REVOKE INSERT ON Student FROM user1;
+
+-- TCL Commands
+SAVEPOINT sp1;
+
+INSERT INTO Student VALUES (3,'Vijay','8');
+
+ROLLBACK TO sp1;
+
+COMMIT;
+Output
+Tables created successfully
+Data inserted
+GRANT & REVOKE applied
+SAVEPOINT created
+Insert rolled back successfully
+Final data committed
+
+Result
+
+Thus, the school database was created and DCL & TCL functions were performed successfully.

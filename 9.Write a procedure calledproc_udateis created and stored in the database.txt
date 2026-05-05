@@ -1,0 +1,51 @@
+Aim
+
+To create a procedure proc_update that updates qty_on_hand in product_master and order_status in sales_order.
+
+Algorithm
+Create procedure with input parameters
+Update product_master.qty_on_hand
+Update sales_order.order_status
+End procedure
+Call procedure using PL/SQL block
+Code (Full PL/SQL)
+CREATE OR REPLACE PROCEDURE proc_update(
+    p_product_no IN NUMBER,
+    p_qty IN NUMBER,
+    p_order_no IN NUMBER,
+    p_status IN VARCHAR2
+)
+IS
+BEGIN
+    -- Update product quantity
+    UPDATE product_master
+    SET qty_on_hand = qty_on_hand - p_qty
+    WHERE product_no = p_product_no;
+
+    -- Update order status
+    UPDATE sales_order
+    SET order_status = p_status
+    WHERE order_no = p_order_no;
+
+    COMMIT;
+END;
+/
+Calling the Procedure
+BEGIN
+    proc_update(101, 5, 5001, 'Delivered');
+END;
+/
+Output
+qty_on_hand reduced for given product
+order_status updated to Delivered
+Example Result
+product_master
+product_no	qty_on_hand
+101	(old value - 5)
+sales_order
+order_no	order_status
+5001	Delivered
+
+Result
+
+Thus, the procedure proc_update was created and executed successfully.

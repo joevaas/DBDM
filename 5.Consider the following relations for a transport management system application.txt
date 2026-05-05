@@ -1,0 +1,70 @@
+Aim
+
+To create tables with constraints and develop a SQL query to list each driver’s details along with number of trips traveled.
+
+Algorithm
+Create tables DRIVER, CITY, TRUCK
+Apply Primary Keys
+Apply CHECK constraint for gender = 'male'
+Create TRIP table to store trips
+Insert sample data
+Use GROUP BY to count trips per driver
+Code (Short & Full SQL)
+CREATE TABLE DRIVER(
+    DRIVER_CODE INT PRIMARY KEY,
+    DNAME VARCHAR(30),
+    DOB DATE,
+    GENDER VARCHAR(10) CHECK (GENDER='male')
+);
+
+CREATE TABLE CITY(
+    CITY_CODE INT PRIMARY KEY,
+    CITY_NAME VARCHAR(30)
+);
+
+CREATE TABLE TRUCK(
+    TRUCK_CODE INT PRIMARY KEY,
+    TRUCK_TYPE VARCHAR(30)
+);
+
+-- Trip Table
+CREATE TABLE TRIP(
+    TRIP_ID INT PRIMARY KEY,
+    DRIVER_CODE INT,
+    CITY_CODE INT,
+    TRUCK_CODE INT,
+    FOREIGN KEY(DRIVER_CODE) REFERENCES DRIVER(DRIVER_CODE),
+    FOREIGN KEY(CITY_CODE) REFERENCES CITY(CITY_CODE),
+    FOREIGN KEY(TRUCK_CODE) REFERENCES TRUCK(TRUCK_CODE)
+);
+
+-- Insert Data
+INSERT INTO DRIVER VALUES
+(1,'Ravi','1990-01-01','male'),
+(2,'Arun','1992-02-02','male');
+
+INSERT INTO CITY VALUES
+(101,'Chennai'),
+(102,'Madurai');
+
+INSERT INTO TRUCK VALUES
+(201,'Mini'),
+(202,'Heavy');
+
+INSERT INTO TRIP VALUES
+(1,1,101,201),
+(2,1,102,202),
+(3,2,101,201);
+Query
+SELECT D.DRIVER_CODE, D.DNAME, COUNT(T.TRIP_ID) AS NO_OF_TRIPS
+FROM DRIVER D
+LEFT JOIN TRIP T ON D.DRIVER_CODE = T.DRIVER_CODE
+GROUP BY D.DRIVER_CODE, D.DNAME;
+Output
+DRIVER_CODE	DNAME	NO_OF_TRIPS
+1	Ravi	2
+2	Arun	1
+
+Result
+
+Thus, the transport management database was created and the query to list drivers with number of trips was executed successfully.

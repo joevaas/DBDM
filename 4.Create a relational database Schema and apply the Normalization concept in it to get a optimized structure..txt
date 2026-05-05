@@ -1,0 +1,68 @@
+Aim
+
+To create a relational database schema and apply normalization (1NF, 2NF, 3NF) to obtain an optimized structure.
+
+Algorithm
+Create an unnormalized table (UNF)
+Convert to 1NF (remove repeating groups)
+Convert to 2NF (remove partial dependency)
+Convert to 3NF (remove transitive dependency)
+Create final normalized tables
+Insert sample data and display
+Code (Short & Full SQL)
+-- Final Normalized Tables (3NF)
+
+CREATE TABLE Student(
+    student_id INT PRIMARY KEY,
+    name VARCHAR(30)
+);
+
+CREATE TABLE Course(
+    course_id INT PRIMARY KEY,
+    course_name VARCHAR(30)
+);
+
+CREATE TABLE Instructor(
+    inst_id INT PRIMARY KEY,
+    inst_name VARCHAR(30)
+);
+
+CREATE TABLE Enrollment(
+    student_id INT,
+    course_id INT,
+    inst_id INT,
+    PRIMARY KEY(student_id, course_id),
+    FOREIGN KEY(student_id) REFERENCES Student(student_id),
+    FOREIGN KEY(course_id) REFERENCES Course(course_id),
+    FOREIGN KEY(inst_id) REFERENCES Instructor(inst_id)
+);
+
+-- Insert Data
+INSERT INTO Student VALUES (1,'Ravi'),(2,'Arun');
+INSERT INTO Course VALUES (101,'DBMS'),(102,'Java');
+INSERT INTO Instructor VALUES (201,'Kumar'),(202,'Raj');
+
+INSERT INTO Enrollment VALUES
+(1,101,201),
+(2,102,202);
+Output
+Student Table
+student_id	name
+1	Ravi
+2	Arun
+Course Table
+course_id	course_name
+101	DBMS
+102	Java
+Instructor Table
+inst_id	inst_name
+201	Kumar
+202	Raj
+Enrollment Table
+student_id	course_id	inst_id
+1	101	201
+2	102	202
+
+Result
+
+Thus, the relational schema was normalized successfully to Third Normal Form (3NF) ensuring optimized structure.

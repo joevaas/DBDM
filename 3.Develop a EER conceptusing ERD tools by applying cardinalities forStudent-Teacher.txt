@@ -1,0 +1,65 @@
+Aim
+
+To develop an EER model for Student–Teacher relationship using specialization and apply appropriate mapping cardinalities.
+
+Algorithm
+Create entity Person (superclass)
+Specialize into Student and Teacher (subclasses)
+Define attributes for each subclass
+Create relationship TEACHES between Teacher and Student
+Apply cardinality (1 : N)
+Convert EER to relational tables
+Insert sample data and display
+Code (Short & Full SQL)
+-- Superclass
+CREATE TABLE Person(
+    person_id INT PRIMARY KEY,
+    name VARCHAR(30)
+);
+
+-- Subclass Student
+CREATE TABLE Student(
+    person_id INT PRIMARY KEY,
+    course VARCHAR(30),
+    FOREIGN KEY(person_id) REFERENCES Person(person_id)
+);
+
+-- Subclass Teacher
+CREATE TABLE Teacher(
+    person_id INT PRIMARY KEY,
+    subject VARCHAR(30),
+    FOREIGN KEY(person_id) REFERENCES Person(person_id)
+);
+
+-- Relationship (1 Teacher : Many Students)
+CREATE TABLE Teaches(
+    teacher_id INT,
+    student_id INT,
+    PRIMARY KEY(teacher_id, student_id),
+    FOREIGN KEY(teacher_id) REFERENCES Teacher(person_id),
+    FOREIGN KEY(student_id) REFERENCES Student(person_id)
+);
+
+-- Insert Data
+INSERT INTO Person VALUES (1,'Ravi'),(2,'Arun'),(3,'Kumar');
+
+INSERT INTO Teacher VALUES (1,'Maths');
+INSERT INTO Student VALUES (2,'BSc'),(3,'BCA');
+
+INSERT INTO Teaches VALUES (1,2),(1,3);
+Output
+Teacher Table
+person_id	subject
+1	Maths
+Student Table
+person_id	course
+2	BSc
+3	BCA
+Teaches Relationship
+teacher_id	student_id
+1	2
+1	3
+
+Result
+
+Thus, the EER model for Student–Teacher relationship was implemented successfully using specialization and mapping cardinality.
