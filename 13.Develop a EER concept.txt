@@ -26,35 +26,113 @@ Vehicle → Car/Truck (IS-A relationship)
 👉 (Draw: Car & Truck → Vehicle using triangle “ISA”)
 
 Code (Short SQL Mapping)
-CREATE TABLE Vehicle(
-    vehicle_id INT PRIMARY KEY,
-    type VARCHAR(20)
+-- SQL Program to Develop EER Concept using Bottom-Up Approach (Generalization)
+
+-- Superclass Table: Person
+CREATE TABLE Person (
+    Person_ID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Address VARCHAR(100)
 );
 
-CREATE TABLE Car(
-    vehicle_id INT PRIMARY KEY,
-    seats INT,
-    FOREIGN KEY(vehicle_id) REFERENCES Vehicle(vehicle_id)
+-- Subclass Table: Student
+CREATE TABLE Student (
+    Student_ID INT PRIMARY KEY,
+    Course VARCHAR(50),
+    FOREIGN KEY (Student_ID) REFERENCES Person(Person_ID)
 );
 
-CREATE TABLE Truck(
-    vehicle_id INT PRIMARY KEY,
-    capacity INT,
-    FOREIGN KEY(vehicle_id) REFERENCES Vehicle(vehicle_id)
+-- Subclass Table: Teacher
+CREATE TABLE Teacher (
+    Teacher_ID INT PRIMARY KEY,
+    Subject VARCHAR(50),
+    FOREIGN KEY (Teacher_ID) REFERENCES Person(Person_ID)
 );
 
-CREATE TABLE Owner(
-    owner_id INT PRIMARY KEY,
-    name VARCHAR(30)
+-- Subclass Table: Admin
+CREATE TABLE Admin (
+    Admin_ID INT PRIMARY KEY,
+    Department VARCHAR(50),
+    FOREIGN KEY (Admin_ID) REFERENCES Person(Person_ID)
 );
 
-CREATE TABLE Owns(
-    owner_id INT,
-    vehicle_id INT,
-    PRIMARY KEY(owner_id, vehicle_id),
-    FOREIGN KEY(owner_id) REFERENCES Owner(owner_id),
-    FOREIGN KEY(vehicle_id) REFERENCES Vehicle(vehicle_id)
+-- Course Table
+CREATE TABLE Course (
+    Course_ID INT PRIMARY KEY,
+    Course_Name VARCHAR(50)
 );
+
+-- Department Table
+CREATE TABLE Department (
+    Dept_ID INT PRIMARY KEY,
+    Dept_Name VARCHAR(50)
+);
+
+-- Relationship: Student ENROLLS Course (M:N)
+CREATE TABLE Enrolls (
+    Student_ID INT,
+    Course_ID INT,
+    PRIMARY KEY (Student_ID, Course_ID),
+    FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID),
+    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)
+);
+
+-- Relationship: Teacher TEACHES Course (1:N)
+CREATE TABLE Teaches (
+    Teacher_ID INT,
+    Course_ID INT,
+    PRIMARY KEY (Teacher_ID, Course_ID),
+    FOREIGN KEY (Teacher_ID) REFERENCES Teacher(Teacher_ID),
+    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)
+);
+
+-- Relationship: Admin MANAGES Department (1:1)
+CREATE TABLE Manages (
+    Admin_ID INT PRIMARY KEY,
+    Dept_ID INT UNIQUE,
+    FOREIGN KEY (Admin_ID) REFERENCES Admin(Admin_ID),
+    FOREIGN KEY (Dept_ID) REFERENCES Department(Dept_ID)
+);
+
+-- Insert Data into Person
+INSERT INTO Person VALUES (101, 'Rahul', 'Chennai');
+INSERT INTO Person VALUES (201, 'Anita', 'Coimbatore');
+INSERT INTO Person VALUES (301, 'Kumar', 'Madurai');
+
+-- Insert Data into Student
+INSERT INTO Student VALUES (101, 'Computer Science');
+
+-- Insert Data into Teacher
+INSERT INTO Teacher VALUES (201, 'Database Management');
+
+-- Insert Data into Admin
+INSERT INTO Admin VALUES (301, 'Education Department');
+
+-- Insert Data into Course
+INSERT INTO Course VALUES (1, 'DBMS');
+INSERT INTO Course VALUES (2, 'Operating Systems');
+
+-- Insert Data into Department
+INSERT INTO Department VALUES (10, 'Education Department');
+
+-- Student Enrolls
+INSERT INTO Enrolls VALUES (101, 1);
+INSERT INTO Enrolls VALUES (101, 2);
+
+-- Teacher Teaches
+INSERT INTO Teaches VALUES (201, 1);
+
+-- Admin Manages
+INSERT INTO Manages VALUES (301, 10);
+
+-- Display Results
+SELECT * FROM Person;
+SELECT * FROM Student;
+SELECT * FROM Teacher;
+SELECT * FROM Admin;
+SELECT * FROM Enrolls;
+SELECT * FROM Teaches;
+SELECT * FROM Manages;
 Output
 Vehicle
 vehicle_id	type
